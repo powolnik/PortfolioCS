@@ -40,7 +40,7 @@ class TerminalAI:
         if len(self.logs) > 18:
             self.logs.pop(0)
 
-    def handle_command(self, cmd):
+    async def handle_command(self, cmd):
         import pygame
         try:
             import platform
@@ -64,7 +64,7 @@ class TerminalAI:
         elif base_cmd == "whoami":
             self.add_log("Role: Senior Software Engineer / C++ Specialist", "INFO")
         elif base_cmd == "ls":
-            self.add_log("/projects: [hello_wasm, path_tracer, sorting_visualizer]", "INFO")
+            self.add_log("/projects: [hello_wasm]", "INFO")
         elif base_cmd == "status":
             self.add_log(f"STABILITY: {self.stability}% | UPTIME: {pygame.time.get_ticks()//1000}s", "INFO")
         elif base_cmd == "inject_latency":
@@ -86,12 +86,34 @@ class TerminalAI:
             self.is_killed = False
             self.current_speed = self.base_speed
             self.add_log("Rebooting... System restored.", "SYSTEM")
+        elif base_cmd == "cat":
+            if not args:
+                self.add_log("cat: missing project name", "ERROR")
+            else:
+                project = args[0]
+                if project == "hello_wasm":
+                    self.add_log(f"Reading {project}/main.cpp...", "INFO")
+                    if platform:
+                        try:
+                            # Fetch source via FastAPI endpoint
+                            response = await platform.window.fetch(f"/source/{project}")
+                            text = await response.text()
+                            for line in text.split("\n")[:10]: # Limit preview
+                                if line.strip(): self.add_log(f"  {line}", "SYSTEM")
+                            if len(text.split("\n")) > 10:
+                                self.add_log("  [... TRUNCATED ...]", "SYSTEM")
+                        except Exception as e:
+                            self.add_log(f"Fetch error: {str(e)}", "ERROR")
+                    else:
+                        self.add_log("Direct fetch only available in WASM environment.", "WARNING")
+                else:
+                    self.add_log(f"Source for '{project}' not found.", "ERROR")
         elif base_cmd == "run":
             if not args:
                 self.add_log("run: missing project name", "ERROR")
             else:
                 project = args[0]
-                if project in ["hello_wasm", "path_tracer", "sorting_visualizer"]:
+                if project == "hello_wasm":
                     self.add_log(f"Launching {project} in display buffer...", "INFO")
                     if platform:
                         try:
@@ -142,7 +164,7 @@ class TerminalAI:
                     self.is_running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        self.handle_command(self.input_buffer)
+                        await self.handle_command(self.input_buffer)
                         self.input_buffer = ""
                     elif event.key == pygame.K_BACKSPACE:
                         self.input_buffer = self.input_buffer[:-1]

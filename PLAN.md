@@ -43,3 +43,5 @@
 - [ ] **Efekty CRT:** Shadery (scanlines, distortion).
 - [ ] **Mobile Support:** Wirtualna klawiatura.
 - [ ] **SEO Layer:** Statyczny HTML z treścią CV dla botów.
+
+    aider --model openrouter/deepseek/deepseek-r1:free --chat-mode architect --yes-always --cache-prompts --pretty --stream --fancy-input --dark-mode --no-show-model-warnings --watch-files

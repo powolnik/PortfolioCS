@@ -8,7 +8,6 @@ app = FastAPI(title="AI Terminal Portfolio")
 # Montujemy pliki silnika bezpośrednio w głównym katalogu (dla Pygbag)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/pkg", StaticFiles(directory="static/pkg"), name="pkg")
-app.mount("/", StaticFiles(directory="engine/build/web", html=True), name="engine")
 
 @app.get("/source/{project_name}")
 async def get_source(project_name: str):
@@ -22,6 +21,8 @@ async def get_source(project_name: str):
         with open(file_path, "r") as f:
             return PlainTextResponse(f.read())
     return PlainTextResponse("Error: Source not found.", status_code=404)
+
+app.mount("/", StaticFiles(directory="engine/build/web", html=True), name="engine")
 
 if __name__ == "__main__":
     import uvicorn
