@@ -1,77 +1,171 @@
-# Game Design Document
+# Game Design Document: `gra-strona-portfolio.pl`
+---
 
-## Overview
-This is a game about exploring and discovering new projects.
+## 📋 Podstawowe Informacje o Projekcie
+| Wartość | Opis |
+|---------|------|
+| **Tytuł** | `gra-strona-portfolio` - Interaktywna Strona Portfolio w Formie Gry 2D |
+| **Platforma** | Strona internetowa (oparta na silniku Phaser.js 3, kompatybilna z przeglądarkami mobilnymi i stacjonarnymi) |
+| **Cel Główny** | Stworzenie interaktywnej wersji portfolio, która zastępuje statyczną podstronę grą, w której potencjalni rekruterzy mogą zanurzyć się w procesie prezentacji umiejętności, a jednocześnie sprawdzić, jak radzimy sobie z niespodziankami w pracy. |
+| **Docelowi Odbiorcy** | Rekruterzy z branży IT/grafiki designerów, przyjaciele, rodzina oraz studenci chcący nauczyć się tworzyć interaktywne strony internetowe. |
 
-## Avatar
-The avatar in the game is a curious and enthusiastic character who loves to share their knowledge and discoveries with the player. They have a strong desire to present available projects to the player, as they believe that sharing information and ideas is the key to progress and innovation.
+---
 
-### Avatar's Role in Presenting Projects
-The avatar's primary role is to act as a guide and mentor to the player, introducing them to various projects and helping them understand the potential benefits and challenges of each one. The avatar is always on the lookout for new and exciting projects to share with the player, and they take great joy in seeing the player's reaction to their suggestions.
+## 🎮 Koncepcja Główna
+Graczem jest potencjalny rekruter, który wchodzi na stronę portfolio. Przed nim otwiera się dwuwymiarowy świat, w którym porusza się Avatar Twórcy – reprezentacja autora portfolio. Avatar porusza się automatycznie po zaprojektowanej ścieżce, aby przedstawić poszczególne projekty z portfolio, umieszczone w różnych punktach mapy.
 
-#### Avatar's Approach to Selecting Projects
-When selecting projects to present to the player, the avatar considers several factors:
-- The player's current skill level and interests
-- The potential impact and relevance of the project
-- The avatar's own knowledge and experience with the project
+Rekruter ma możliwość:
+1.  Zakłócania procesu prezentacji za pomocą myszki lub komend tekstowych
+2.  Odbierania awatarpowi punktów energii
+3.  Dotykania się do interakcji z autorem, który komentuje każde zakłócenie w czasie rzeczywistym
 
-The avatar strives to present a diverse range of projects that cater to the player's needs and preferences, while also challenging them to explore new areas and expand their horizons.
+Głównym celem rekruty jest zobaczenie wszystkich projektów z portfolio, nawet mimo zakłóceń. Po zakończeniu prezentacji wyświetla się podsumowanie z statystykami wykonanych akcji zakłócających.
 
-#### Avatar's Interaction with the Player
-During the project presentation process, the avatar engages in lively discussions with the player, sharing their insights and opinions on each project. They encourage the player to ask questions, express their thoughts, and provide feedback on the projects presented.
+---
 
-The avatar is always open to the player's suggestions and is willing to adapt their approach based on the player's preferences and learning style. They aim to create a collaborative and supportive environment where the player feels comfortable exploring new ideas and taking risks.
+## 🧰 Szczegółowe Mechaniki Gry
 
-## Game Mechanics
-The avatar's project presentation behavior is integrated into the game's core mechanics, influencing the player's decisions and shaping their overall experience.
+### 1. Świat 2D Portfolio
+| Element | Opis |
+|---------|------|
+| **Styl Wizualny** | Minimalistyczny flat design dopasowany do brandu autorskiego (możliwość dostosowania kolorów, czcionek i grafiki w panelu administracyjmnym twórcy). |
+| **Struktura Świata** | Płaska mapa podzielona na strefy: <br> ✅ Punkt Startowy - miejsce, w którym pojawia się avatar <br> ✅ Strefy Projektów - każda strefa odpowiada jednemu projektowi z portfolio <br> ✅ Punkty Energii - małe, średnie i duże punkty do zbierania, które odzyskują awatarpowi energię <br> ✅ Ścieżki Ruchu - zaprojektowana trasa, po której porusza się avatar automatycznie |# chcialbym zeby calosc wygladala jak dzialajaca w terminalu AI!
 
-### Impact on Player Decisions
-The avatar's project suggestions can have a significant impact on the player's choices, as they provide valuable information and insights that the player may not have considered otherwise. The player can choose to follow the avatar's recommendations or explore alternative paths based on their own interests and goals.
+---
 
-### Rewards and Consequences
-Following the avatar's project suggestions can lead to various rewards, such as unlocking new abilities, gaining access to exclusive resources, or advancing the game's narrative. However, the player may also face challenges or setbacks if they choose to ignore the avatar's advice or pursue a different path.
+### 2. System Energii Avatara
+Avatar ma początkowy poziom energii wynoszący **100 punktów**. Każde działanie zakłócające wykonane przez rekrutera odbiera awatarpowi energię:
+| Działanie Rekrutera | Koszt Energii |
+|----------------------|---------------|
+| Postawienie ściany/przeszkody | -5 pkt |
+| Spowolnienie pojedynczego pola | -10 pkt na sekundę |
+| Umieszczenie pułapki (błotne pole, klatka) | -15 pkt |
+| Zniszczenie punktu energii | -3 pkt |
 
-### Avatar's Evolving Knowledge and Preferences
-As the game progresses, the avatar's knowledge and preferences regarding projects may evolve based on their interactions with the player and their own experiences. This dynamic nature of the avatar's character adds depth and realism to the game, as the player can witness the avatar's growth and development over time.
+Gdy poziom energii dojdzie do zera, avatar zatrzymuje się i komentuje brak siły do kontynuacji prezentacji. Rekruter ma możliwość pomóc awatarowi (dodanie 50 pkt energii) lub kontynuować zakłócenia.
 
-## Character Design
-The avatar's character design reflects their role as a project presenter and guide. They have a friendly and approachable appearance, with expressive features that convey their enthusiasm and passion for sharing knowledge.
+---
 
-### Personality Traits
-The avatar's personality traits align with their project presentation behavior, including:
-- Curiosity: The avatar is always eager to learn and discover new things, which drives their desire to present projects to the player.
-- Enthusiasm: The avatar's excitement and passion for sharing knowledge are evident in their interactions with the player.
-- Empathy: The avatar is attuned to the player's needs and preferences, allowing them to tailor their project suggestions accordingly.
-- Adaptability: The avatar is flexible and open-minded, willing to adjust their approach based on the player's feedback and the evolving game environment.
+### 3. Działania Rekrutera
+Rekruter ma dwa sposoby interakcji z światem gry:
+#### 🖱️ Interakcja za Pomocą Myszy
+- Kliknięcie lewym przyciskiem: postawienie przeszkody w wybranym miejscu
+- Kliknięcie prawym przyciskiem: spowolnienie wybranego pola
+- Przeciąganie myszką: umieszczenie pułapki na obszarze wybranym przez rekrutera
+- Kliknięcie w punkt projektu: otwarcie modalu z opisem projektu (rekruent może pominąć ten krok, co spowoduje komentarz avatara)
 
-### Appearance and Animations
-The avatar's appearance and animations are designed to convey their enthusiasm for sharing projects. They may have a bright and colorful outfit, with accessories or props that symbolize their role as a guide and mentor. Their animations could include gestures and expressions that emphasize their excitement and engagement during project presentations.
+#### 📝 Komendy Tekstowe
+W dolnym prawym rogu ekranu znajduje się pole do wpisywania komend. Dostępne polecenia:
+| Komenda | Działanie |
+|---------|-----------|
+| `/block X Y` | Postawienie ściany w pozycji o współrzędnych X,Y |
+| `/slow X Y` | Spowolnienie pola w pozycji X,Y |
+| `/trap X Y` | Umieszczenie pułapki w pozycji X,Y |
+| `/stats` | Wyświetlenie statystyk wykonanych akcji zakłócających |
+| `/reset` | Powrót gry do stanu początkowego |
+| `/skip [ID_PROJEKTU]` | Pominęcie prezentacji wybranego projektu |
+| `/help` | Wyświetlenie listy dostępnych komend |
 
-### Dialogue and Voice Lines
-The avatar's dialogue and voice lines are crafted to reflect their project presentation behavior. They may use phrases that encourage exploration, such as "Have you considered trying this project?" or "I think you might find this interesting." Their tone is friendly and supportive, creating a welcoming atmosphere for the player.
+---
 
-## User Interface
-The user interface is designed to effectively communicate the avatar's project recommendations to the player.
+### 4. Odpowiedzi Avatara
+Avatar dynamicznie komentuje wszystkie akcje rekrutera, aby stworzyć personalizowany, relaksowany charakter dopasowany do brandu autorskiego. Baza komentarzy jest podzielona na kategorie:
+1.  **Komentarze z powodu zakłóceń**: Przykładowe teksty: *"Hej, nie stawiaj ścian obok mojego stanowiska!"*, *"Pułapka! Trudno mi się poruszać po błotnym polu!"*
+2.  **Komentarze podczas zbierania energii**: Przykładowe teksty: *"Dzięki za ten punkt energii – teraz mogę kontynuować!"*
+3.  **Komentarze podczas prezentacji projektów**: Przykładowe teksty: *"Oto mój projekt z gry HTML5 – użyłem Phaser.js do stworzenia mechanik!"*, *"To był mój pierwszy projekt z Reactem – stworzyłem w nim sklep internetowy"*
+4.  **Komentarze przy braku energii**: Przykładowe teksty: *"Muszę zebrać więcej energii, inaczej nie dotrę do następnego projektu!"*
 
-### Project Suggestion Display
-A dedicated UI element is created to display the avatar's project suggestions. This could be a pop-up window, a sidebar, or an in-game menu that appears when the avatar has a new project to share. The UI element should be visually appealing and easy to navigate, allowing the player to quickly access the relevant information.
+Wszystkie teksty komentarzy można dostosować w panelu administracyjmnym twórcy.
 
-### Integration with Existing UI Elements
-The avatar's project presentation feature is integrated with existing UI elements to ensure a seamless user experience. For example, the avatar's suggestions may be incorporated into the game's quest log or task list, allowing the player to easily track and manage their project-related activities.
+---
 
-### Effective Communication of Recommendations
-The UI is designed to effectively communicate the avatar's project recommendations to the player. This may involve using icons, colors, or other visual cues to highlight the importance or relevance of each project. The UI should also provide clear and concise descriptions of the projects, along with any relevant details or requirements.
+### 5. Prezentacja Projektów Portfolio
+Gdy avatar dotrze do strefy projektu, automatycznie otworzy się modalne okno z:
+- Tytułem projektu
+- Opisem szczegółowym
+- Zrzutem ekranu lub demo projektu
+- Linkiem do repozytorium GitHub lub live demo projektu
+- Przyciskami: *Zamknij* i *Dalej do następnego projektu*
 
-## Game Flow
-The avatar's project presentation behavior is integrated into the overall game flow, ensuring a smooth and engaging experience for the player.
+Rekruter może zignorować modalne okno i kontynuować zakłócenia, co spowoduje dodanie dodatkowego komentarza avatara proszącego o skupienie się na prezentacji.
 
-### Timing and Frequency of Project Presentations
-The avatar presents projects to the player at appropriate intervals throughout the game, based on the player's progress and the availability of new projects. The timing and frequency of these presentations are carefully balanced to maintain the player's interest and motivation without overwhelming them with too much information.
+---
 
-### Impact on Game Narrative and Objectives
-The avatar's project suggestions can influence the game's narrative and objectives, as they may introduce new storylines, challenges, or opportunities for the player to explore. The player's choices regarding the avatar's recommendations can shape the direction of the game and lead to different outcomes or endings.
+### 6. Tryby Gry
+| Tryb | Opis |
+|------|------|
+| **Tryb Standardowy** | Domyślny tryb z balansowanymi kosztami zakłóceń i ilością punktów energii |
+| **Tryb Łatwy** | Większa ilość punktów energii do zbierania, niższe koszty zakłóceń |
+| **Tryb Trudny** | Mniejsza ilość punktów energii, wyższe koszty zakłóceń |
+| **Tryb Bez Zakłóceń** | Dla osób, które nie chcą grać – avatar porusza się automatycznie, bez możliwości zakłócania prezentacji |
 
-### Smooth Transitions between Project Presentation and Other Game Elements
-The game flow ensures smooth transitions between the avatar's project presentation and other game elements, such as exploration, combat, or puzzle-solving. The player should be able to seamlessly switch between engaging with the avatar's suggestions and pursuing other activities within the game world.
+Wszystkie ustawienia trybów można dostosować w panelu administracyjmnym twórcy.
 
-By incorporating the avatar's desire to present available projects to the player, the game creates a dynamic and immersive experience that encourages exploration, learning, and collaboration. The avatar's role as a guide and mentor adds depth to the game's narrative and mechanics, providing the player with a supportive and engaging companion throughout their journey.
+---
+
+## 🎨 Charakterystyka Avatara
+Avatar jest wizualną reprezentacją autorem portfolio. Można go w pełni dostosować:
+- Wybór szaty (bluzka developera, koszulka projektanta)
+- Styl animacji chodzenia, mówienia i zbierania energii
+- Dodanie logo autorskie na koszulce avatara
+
+---
+
+## 💻 Techniczne Wymagania
+1.  **Silnik Gry**: Phaser.js 3 - popularny silnik do tworzenia 2D gier webowych, łatwy w integracji z stronami internetowymi
+2.  **Frontend**: HTML5, CSS3, JavaScript
+3.  **Przechowywanie Danych**:
+    - Lokalne magazynowanie przeglądarki do zapisywania statystyk zakłóceń
+    - Panel administracyjmny do dodawania projektów portfolio, dostosowywania komentarzy i ustawień gry
+4.  **Responsywność**: Gra działa na urządzeniach mobilnych i stacjonarnych, z automatycznym dostosowaniem rozmiaru ekranu.
+
+---
+
+## 🚀 Proces Tworzenia
+### Faza 1: Podstawowa Konfiguracja
+- Ustawienie projektu Phaser.js
+- Stworzenie prostego świata 2D z punktem startowym i ścieżką ruchu avatara
+- Dodanie podstawowej animacji ruchu avatara
+
+### Faza 2: Dodanie Systemów Głównych
+- Implementacja systemu energii avatara
+- Dodanie mechanik zakłóceń (przeszkody, spowolnienia, pułapki) za pomocą myszki i komend tekstowych
+- Stworzenie bazy podstawowych komentarzy avatara
+
+### Faza 3: Integrowanie Portfolio
+- Dodanie modali z opisami projektów
+- Umieszczenie punktów projektów na mapie świata
+- Implementacja podsumowania końcowego z statystykami zakłóceń
+
+### Faza 4: Optymalizacja i Testowanie
+- Testowanie gry na różnych urządzeniach
+- Dostosowanie balansu energetycznego
+- Dodanie samouczka wprowadzającego dla nowych użytkowników
+- Optymalizacja renderowania w celu poprawy wydajności na starszych urządzeniach
+
+### Faza 5: Wdrożenie
+- Wdrożenie strony na platformie hostingu (GitHub Pages, Vercel, Netlify)
+- Dodanie panelu administracyjmnego do zarządzania portfolio i ustawień gry
+
+---
+
+## 🎯 Cele Odbiorców
+1.  **Rekruterzy**: Zanurzenie się w interaktywnym doświadczeniu, zobaczenie umiejętności autorsa w tworzeniu interaktywnych stron i radzeniu sobie z problemami w pracy.
+2.  **Przyjaciele i Rodzina**: Możliwość rozrywki poprzez zakłócanie prezentacji portfolio autorskiego.
+3.  **Studenci**: Przykład praktycznego zastosowania silnika Phaser.js do tworzenia interaktywnych stron internetowych.
+
+---
+
+## ⚠️ Ryzyka i Rozwiązania
+| Ryzyko | Rozwiązanie |
+|--------|-------------|
+| Wolne działanie gry na starszych urządzeniach | Optymalizacja renderowania, zmniejszenie rozmiaru zasobów graficznych, dodanie opcji wyłączenia wysokiej jakości grafiki |
+| Użytkownicy nie rozumieją mechanik gry | Dodanie krótkiego samouczka na początku gry, wyświetlania podpowiedzi podczas pierwszych akcji zakłócających |
+| Zbyt trudny lub zbyt łatwy balans energetyczny | Dodanie panelu ustawień, w którym autor może dostosować koszty zakłóceń i ilość punktów energii do zbierania |
+
+---
+
+## 📝 Podsumowanie
+`gra-strona-portfolio` łączy funkcję standardowej strony portfolio z rozrywką, tworząc niepowtarzalne doświadczenie dla potencjalnych rekruterów. Dzięki interaktywnym elementom, grysta nie tylko zobaczy umiejętności autorsa, ale również sprawdzi, jak radzi sobie on z niespodziankami w pracy – co jest kluczowym aspektem w branży IT i designu.
+
+
