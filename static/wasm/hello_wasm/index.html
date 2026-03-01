@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { 
+            background: #0d0208; 
+            color: #00ff41; 
+            font-family: 'Courier New', monospace; 
+            padding: 20px;
+            margin: 0;
+        }
+        .log { 
+            margin: 5px 0; 
+            border-left: 2px solid #00ff41; 
+            padding-left: 10px;
+            font-size: 14px;
+        }
+        h3 { border-bottom: 1px solid #00ff41; padding-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <h3>[C++ MODULE] Hello_Wasm (SIMULATED)</h3>
+    <div id="output">
+        <div class="log">[SYSTEM] Initializing WebAssembly memory... DONE</div>
+        <div class="log">[SYSTEM] Starting simulation kernel... </div>
+    </div>
+    <script>
+        const output = document.getElementById('output');
+        let steps = [
+            "[C++ MODULE] Hello from WebAssembly!",
+            "[C++ MODULE] Simulation kernel starting...",
+            "[C++ MODULE] Calculating physics... OK.",
+            "[C++ MODULE] Memory check: PASSED.",
+            "[SYSTEM] Simulation complete. Module state: IDLE."
+        ];
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < steps.length) {
+                const div = document.createElement('div');
+                div.className = 'log';
+                div.innerText = steps[i];
+                output.appendChild(div);
+                i++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 800);
+    </script>
+</body>
+</html>

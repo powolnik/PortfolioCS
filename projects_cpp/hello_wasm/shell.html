@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>C++ WASM Module: Hello_Wasm</title>
+    <style>
+      body { 
+          background: #0d0208; 
+          color: #00ff41; 
+          font-family: 'Courier New', monospace; 
+          padding: 20px;
+          margin: 0;
+          overflow: hidden;
+      }
+      #output { 
+          width: 100%; 
+          height: 100vh; 
+          overflow: auto; 
+          white-space: pre-wrap;
+          font-size: 14px;
+          text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
+      }
+      /* Simple Scanline Effect */
+      body::after {
+          content: "";
+          position: fixed;
+          top: 0; left: 0; bottom: 0; right: 0;
+          background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+          background-size: 100% 4px;
+          z-index: 100;
+          pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="output"></div>
+    <script type='text/javascript'>
+      var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          var element = document.getElementById('output');
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            if (element) {
+              element.innerHTML += text + "
+";
+              element.scrollTop = element.scrollHeight;
+            }
+          };
+        })(),
+        printErr: function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            console.error(text);
+        },
+        canvas: (function() { return null; })(),
+        setStatus: function(text) { 
+            if (text) Module.print("[SYSTEM] " + text); 
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        }
+      };
+      Module.setStatus('Downloading kernel...');
+      window.onerror = function() {
+        Module.setStatus('Exception thrown, see JavaScript console');
+      };
+    </script>
+    {{{ SCRIPT }}}
+  </body>
+</html>
