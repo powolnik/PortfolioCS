@@ -5,18 +5,10 @@ import os
 
 app = FastAPI(title="AI Terminal Portfolio")
 
-# Montujemy pliki statyczne
+# Montujemy pliki silnika bezpośrednio w głównym katalogu (dla Pygbag)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/engine", StaticFiles(directory="engine/build/web"), name="engine")
-
-@app.get("/", response_class=HTMLResponse)
-async def read_root():
-    # Służymy wersję Pygbag jako główną stronę
-    index_path = "engine/build/web/index.html"
-    if os.path.exists(index_path):
-        with open(index_path, "r") as f:
-            return f.read()
-    return HTMLResponse("<h1>Engine not built</h1><p>Run 'pygbag engine' to build.</p>")
+app.mount("/pkg", StaticFiles(directory="static/pkg"), name="pkg")
+app.mount("/", StaticFiles(directory="engine/build/web", html=True), name="engine")
 
 @app.get("/source/{project_name}")
 async def get_source(project_name: str):

@@ -1,9 +1,7 @@
 # 🗺️ Plan Implementacji: `gra-strona-portfolio`
 
-## 🚀 Status Projektu: **W TOKU**
-- [x] **Faza 1: Python Kernel** (Zakończona)
-- [x] **Faza 2: C++ Integration** (Zakończona/Fundamenty gotowe)
-- [ ] **Faza 3: AI Avatar & Feedback** (W kolejce)
+- [x] **Faza 3: AI Avatar & Feedback** (Zakończona)
+- [ ] **Faza 4: Polish & Optymalizacja** (W kolejce)
 
 ---
 
@@ -29,15 +27,19 @@
 ## 🤖 Faza 3: AI Avatar & Feedback (Mechaniki Gry)
 *Cel: Dodanie interaktywności i "duszy" systemowi.*
 
-- [ ] **Logika Ruchu Avatara:** Autonomiczny byt (ASCII/Sprite) poruszający się po terminalu.
-- [ ] **System Stabilności (`SYSTEM_STABILITY`):** 
-    - [ ] Wpływ na płynność animacji.
-    - [ ] Dynamiczne glitche wizualne.
-- [ ] **Interakcja z Rekruterem:**
-    - [ ] Reakcje AI na komendy "ataku" (np. `kill -9`, `memory_leak`).
-    - [ ] System inteligentnych logów systemowych (`[INFO]`, `[WARNING]`).
+- [x] **Logika Ruchu Avatara:** Autonomiczny byt podążający po ścieżce.
+- [x] **System Stabilności (`SYSTEM_STABILITY`):**
+    - [x] Wpływ na prędkość i wizualne glitche.
+    - [x] Dynamiczne zniekształcenia logów.
+- [x] **Interakcja z Rekruterem:**
+    - [x] Obsługa komend ataku: `inject_latency`, `spawn_deadlock`, `memory_leak`, `kill -9`.
+    - [x] System kolorowych logów systemowych i reakcji AI.
 
 ## 🎨 Faza 4: Polish & Optymalizacja
+- [ ] **Efekty CRT:** Shadery (scanlines, distortion).
+- [ ] **Mobile Support:** Wirtualna klawiatura.
+- [ ] **SEO Layer:** Statyczny HTML z treścią CV dla botów.
+
 - [ ] **Efekty CRT:** Shadery (scanlines, distortion).
 - [ ] **Mobile Support:** Wirtualna klawiatura.
 - [ ] **SEO Layer:** Statyczny HTML z treścią CV dla botów.
