@@ -94,7 +94,10 @@ class TerminalAI:
                 if project in ["hello_wasm", "path_tracer", "sorting_visualizer"]:
                     self.add_log(f"Launching {project} in display buffer...", "INFO")
                     if platform:
-                        platform.window.frame_online(f"/static/wasm/{project}/index.html")
+                        try:
+                            platform.window.frame_online(f"/static/wasm/{project}/index.html")
+                        except:
+                            self.add_log("JS Bridge failure.", "ERROR")
                 else:
                     self.add_log(f"Module '{project}' not found.", "ERROR")
         elif base_cmd == "clear":
@@ -124,10 +127,14 @@ class TerminalAI:
     async def main_loop(self):
         import pygame
         import math
-        pygame.init()
-        self.screen = pygame.display.set_mode((800, 600))
-        self.font = pygame.font.SysFont("monospace", FONT_SIZE)
-        self.clock = pygame.time.Clock()
+        try:
+            pygame.init()
+            self.screen = pygame.display.set_mode((800, 600))
+            self.font = pygame.font.SysFont("monospace", FONT_SIZE)
+            self.clock = pygame.time.Clock()
+        except Exception as e:
+            print(f"Pygame init failed: {e}")
+            return
 
         while self.is_running:
             for event in pygame.event.get():
@@ -172,7 +179,9 @@ class TerminalAI:
             
             # CRT Scanline effect (simplified)
             for y in range(0, 600, 4):
-                pygame.draw.line(self.screen, (0, 0, 0, 50), (0, y), (800, y))
+                line_surf = pygame.Surface((800, 1), pygame.SRCALPHA)
+                line_surf.fill((0, 0, 0, 50))
+                self.screen.blit(line_surf, (0, y))
 
             # Input line
             pygame.draw.rect(self.screen, (10, 30, 10), (5, 565, 790, 30))

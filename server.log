@@ -1,8 +1,23 @@
-INFO:     Started server process [105964]
+INFO:     Started server process [117417]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:34898 - "GET / HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34898 - "GET /vt/xterm.css HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:53294 - "GET / HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53294 - "GET /favicon.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56166 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56166 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56178 - "GET /pythons.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56166 - "GET /vtx.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56194 - "GET /browserfs.min.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56166 - "GET /vt/xterm.css HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56178 - "GET /vt/xterm-addon-image.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56198 - "GET /vt/xterm.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56178 - "GET /vt/xterm-addon-image.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56198 - "GET /empty.ogg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56198 - "GET /pythonrc.py HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:46564 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46564 - "GET /vt/xterm.css HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46564 - "GET /empty.ogg HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46548 - "GET /vt/xterm.css HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56786 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56786 - "GET /browserfs.min.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46548 - "GET /vt/xterm.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56792 - "GET /vt/xterm-addon-image.js.map HTTP/1.1" 404 Not Found
