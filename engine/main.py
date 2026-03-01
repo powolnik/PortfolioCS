@@ -29,6 +29,22 @@ class TerminalAI:
         self.current_speed = self.base_speed
         self.glitch_timer = 0
         self.is_rebooting = False
+        
+        # Pre-rendered CRT overlay
+        self.crt_overlay = None
+
+    def _create_crt_overlay(self, width, height):
+        import pygame
+        overlay = pygame.Surface((width, height), pygame.SRCALPHA)
+        # Scanlines
+        for y in range(0, height, 3):
+            pygame.draw.line(overlay, (0, 0, 0, 40), (0, y), (width, y))
+        
+        # Vignette effect
+        for i in range(0, 100, 2):
+            alpha = int(150 * (i / 100)**2)
+            pygame.draw.rect(overlay, (0, 0, 0, alpha), (0, 0, width, height), 100 - i)
+        return overlay
 
     def add_log(self, text, type="INFO"):
         prefix = f"[{type}] "
@@ -154,6 +170,7 @@ class TerminalAI:
             self.screen = pygame.display.set_mode((800, 600))
             self.font = pygame.font.SysFont("monospace", FONT_SIZE)
             self.clock = pygame.time.Clock()
+            self.crt_overlay = self._create_crt_overlay(800, 600)
         except Exception as e:
             print(f"Pygame init failed: {e}")
             return
@@ -182,12 +199,17 @@ class TerminalAI:
                 avatar_color = (200, 200, 0)
             
             # Avatar visual (square + glitch lines)
-            pygame.draw.rect(self.screen, avatar_color, (self.avatar_pos[0]-10, self.avatar_pos[1]-10, 20, 20))
+            apos = list(self.avatar_pos)
+            if self.stability < 50 and random.random() > 0.8:
+                apos[0] += random.randint(-10, 10)
+                apos[1] += random.randint(-10, 10)
+            
+            pygame.draw.rect(self.screen, avatar_color, (apos[0]-10, apos[1]-10, 20, 20))
             if self.stability < 100 and not self.is_killed:
-                for _ in range(int((100 - self.stability) / 10)):
-                    lx = self.avatar_pos[0] + random.randint(-30, 30)
-                    ly = self.avatar_pos[1] + random.randint(-30, 30)
-                    pygame.draw.line(self.screen, avatar_color, (self.avatar_pos[0], self.avatar_pos[1]), (lx, ly), 1)
+                for _ in range(int((100 - self.stability) / 8)):
+                    lx = apos[0] + random.randint(-40, 40)
+                    ly = apos[1] + random.randint(-40, 40)
+                    pygame.draw.line(self.screen, avatar_color, (apos[0], apos[1]), (lx, ly), 1)
 
             # Draw Logs
             for i, log in enumerate(self.logs):
@@ -196,14 +218,17 @@ class TerminalAI:
                 elif "[WARNING]" in log: color = (255, 200, 0)
                 elif "[SYSTEM]" in log: color = (0, 200, 255)
                 
+                # Jitter effect for logs at low stability
+                log_pos = (10, 10 + i * (FONT_SIZE + 2))
+                if self.stability < 20 and random.random() > 0.9:
+                    log_pos = (log_pos[0] + random.randint(-2, 2), log_pos[1])
+
                 text_surf = self.font.render(log, True, color)
-                self.screen.blit(text_surf, (10, 10 + i * (FONT_SIZE + 2)))
+                self.screen.blit(text_surf, log_pos)
             
-            # CRT Scanline effect (simplified)
-            for y in range(0, 600, 4):
-                line_surf = pygame.Surface((800, 1), pygame.SRCALPHA)
-                line_surf.fill((0, 0, 0, 50))
-                self.screen.blit(line_surf, (0, y))
+            # Blit CRT Overlay
+            if self.crt_overlay:
+                self.screen.blit(self.crt_overlay, (0, 0))
 
             # Input line
             pygame.draw.rect(self.screen, (10, 30, 10), (5, 565, 790, 30))

@@ -1,7 +1,7 @@
 # 🗺️ Plan Implementacji: `gra-strona-portfolio`
 
 - [x] **Faza 3: AI Avatar & Feedback** (Zakończona)
-- [ ] **Faza 4: Polish & Optymalizacja** (W kolejce)
+- [ ] **Faza 4: Polish & Optymalizacja** (W toku)
 
 ---
 
@@ -36,9 +36,10 @@
     - [x] System kolorowych logów systemowych i reakcji AI.
 
 ## 🎨 Faza 4: Polish & Optymalizacja
-- [ ] **Efekty CRT:** Shadery (scanlines, distortion).
+- [x] **Efekty CRT:** Optymalizacja scanlines, dodanie winiety (vignette) i glitchy stabilności.
 - [ ] **Mobile Support:** Wirtualna klawiatura.
 - [ ] **SEO Layer:** Statyczny HTML z treścią CV dla botów.
+
 
 - [ ] **Efekty CRT:** Shadery (scanlines, distortion).
 - [ ] **Mobile Support:** Wirtualna klawiatura.
